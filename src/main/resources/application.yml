@@ -1,0 +1,48 @@
+info:
+   app:
+      name: tasklist
+
+api:
+   version: 1
+
+spring:
+   application:
+      name: ${info.app.name}
+   datasource:
+      initialize: update
+      url: ${DB_URL:jdbc:mysql://localhost:3306/tasklist_db?useTimezone=true&serverTimezone=UTC}
+      driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
+      username: ${DB_USERNAME:tasklist}
+      password: ${DB_PASSWORD:123456}
+   jpa:
+      properties:
+         hibernate:
+            temp.use_jdbc_metadata_defaults: false
+            dialect: ${DB_DIALECT:org.hibernate.dialect.MySQL5Dialect}
+      hibernate:
+         ddl-auto: update
+      show-sql: true
+
+logging:
+   config: classpath:log4j2.xml
+   level:
+      root: ${LOG_LEVEL_ROOT:INFO}
+      dev.cintya.tasklist: ${LOG_LEVEL_APP:DEBUG}
+
+server:
+   address: 0.0.0.0
+   port: ${SERVER_PORT:8080}
+   servlet:
+      context-path: /v1
+
+management:
+   server:
+      port: ${MANAGEMENT_PORT:8081}
+   endpoints:
+      web:
+         base-path: /
+
+endpoints:
+   enabled: false
+   health:
+      enabled: true
